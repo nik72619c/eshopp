@@ -1,0 +1,25 @@
+{
+    "users":
+
+    [{
+
+        "userid": 1,
+        "username": "nikhil",
+        "password": "nikhil123",
+        "role": "admin",
+        "active": "true"
+
+        
+    },
+
+     {
+
+        "userid":2,
+        "username": "ram",
+        "password": "ram123",
+        "role": "admin",
+        "active": "true"
+        
+        
+    }]
+}
