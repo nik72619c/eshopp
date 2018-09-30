@@ -2,7 +2,9 @@ const express=require('express');
 const productOperations=require('../db/productOperations');
 var adminRoute=express.Router();
 const sessionChecker=require('../utils/middlewares/sessionChecker');
+const UserRoles=require('../db/schema/userRoleMapping');
 const User=require('../db/schema/userSchema');
+const Roles=require('../db/schema/roleSchema');
 
 adminRoute.get('/', (request,response)=>{
 
@@ -16,9 +18,10 @@ adminRoute.get('/', (request,response)=>{
 //some test
 
 adminRoute.get('/test',(request,response)=>{
-User.find({username: 'nikhil'},(err,content)=>{
+UserRoles.find({},(err,content)=>{
 
     if(err){
+
         response.json({
             "err": error
         });
@@ -28,6 +31,14 @@ User.find({username: 'nikhil'},(err,content)=>{
         response.json({
             "content": content
         });
+    }
+
+    else{
+
+        response.json({
+
+            test: 'some other problem'
+        })
     }
 })
 

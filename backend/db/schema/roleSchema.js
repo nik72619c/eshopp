@@ -9,6 +9,6 @@ var roleSchema= new schema({
     
 });
 
-var roleModel=mongoose.model('role_mst',roleSchema);
+var roleModel=mongoose.model('roles',roleSchema);
 
 module.exports=roleModel;

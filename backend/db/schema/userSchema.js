@@ -8,33 +8,34 @@ var userSchema= new schema({
         'lastname': String
     },
 
-    // 'address': {
-    //     'pincode': Number,
-    //     'city': String,
-    //     'state': String,
-    //     'country': String,
-    //     'locality': String,
-    //     'landmark': String,
-    //     // "type": ""
-    // },
+    'address': {
+        'pincode': Number,
+        'city': String,
+        'state': String,
+        'country': String,
+        'locality': String,
+        'landmark': String,
+        // "type": ""
+    },
 
-    // 'isEmailVerified' : {type: Boolean, default: false},
+    'isEmailVerified' : {type: Boolean, default: false},
     'gender': String,
-    // 'mobile': [Number],
-    // "cart":
-    // "wishlist": [],
-    // "order_history": [],
+    'mobile': [Number],
+    "cart":[],
+    "wishlist": [],
+    "order_history": [],
     'username': String,
     'password': String,
-    // 'email': String,
+    'email': String,
     'status': {type: Boolean, default: true},
     
     //setup for  joins
 
     'role':String,
-    'rights': [Number]
+    // 'rights': [Number]
 
 });
 
 var userModel= mongoose.model('users', userSchema);
 module.exports=userModel;
+

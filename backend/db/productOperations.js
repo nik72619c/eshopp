@@ -1,11 +1,9 @@
-
+// const mongoose=require('./common/connection');
+const UserRoleMapping= require('./schema/userRoleMapping');
+const Users=require('./schema/userSchema');
 const Product=require('./schema/productSchema');
 const Admin=require('./schema/adminSchema');
-var store=require('../utils/sessionstore');
-// const mongoose=require('./common/connection');
-const User=require('./schema/userSchema');
-const UserRoleMapping= require('./schema/user_role_mapping');
-
+const Roles=require('./schema/roleSchema');
 
 var productOperations={
 
@@ -33,14 +31,13 @@ admin.save(err=>{
     }
 });
 
-
     },
 
     checkAdmin(adminObject,request,response){
 
         console.log('inside the checkkadmin function...');
         console.log('the adminObject inside the checkAdmin function is',adminObject);
-       User.find({'username': adminObject.username,'password': adminObject.password}, (err,content)=>{
+       Users.find({"username":adminObject.username,"password": adminObject.password}, (err,content)=>{
 
         console.log("error inside the callback is "+ err + "content is :- ",content);
             if(err){
@@ -56,28 +53,72 @@ admin.save(err=>{
 
             else if(content && content.length>0){
 
-                request.session.username=content[0].username;
-            request.session.save(err=>{
+                UserRoleMapping.find({ "username": content[0].username},(err,userRoleContent)=>{
+                    console.log("userRoleContent "+userRoleContent);
+                    if(err){
 
-                if(err){
-                    console.log('error saving the session...');
-                }
+                        console.log('error inside of the Userrolemapping');
+                        response.json({
 
-                else {
+                            error: err,
+                            responseText: 'could not load the required values from the userrolemapping table'
+                        });
+                    }
 
-                    console.log('session saved successfully..');
-                }
-            });
+                    else if(userRoleContent && userRoleContent.length>0){
+                        console.log('content inside the userrolemapping table', userRoleContent);
 
-                console.log('session created');
-                console.log('request.session ', request.session);
-                response.json({
+                        Roles.find({"roleid": userRoleContent[0].roleid},(err,roleContent)=>{
 
-                    username: content[0].username,
-                    status: 200,
-                    role: content[0].role,
-                    sessionID: request.sessionID
+                            console.log('rolecontent', roleContent);
+                            Users.update({"username": content[0].username, "password": content[0].password},{"role": roleContent[0].rolename},(err,numAffected)=>{
+                                if(err){
+
+                                    console.log('error updating the document....');
+                                }
+
+                                else{
+
+                                    console.log('successfully updated the values and no of values updated are :-',numAffected);
+                                }
+                            });
+                        });
+
+                        
+
+                    }
+
+                    else{
+
+                        console.log('inside userrolemapping else...');
+                    }
                 });
+            // request.session.username=content[0].username;
+            // request.session.save(err=>{
+
+            //     if(err){
+            //         console.log('error saving the session...');
+            //         response.json({
+            //             error: err,
+            //             responseText: 'error saving the session'
+            //         });
+            //     }
+
+            //     else {
+
+            //         console.log('session saved successfully..');
+            //     }
+            // });
+
+            //     console.log('session created');
+            //     console.log('request.session ', request.session);
+            //     response.json({
+
+            //         username: content[0].username,
+            //         status: 200,
+            //         role: content[0].role,
+            //         sessionID: request.sessionID
+            //     });
             }
 
             else{
