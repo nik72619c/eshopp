@@ -67,7 +67,7 @@ this.http.post('http://localhost:1234/fetchUser',adminObject,{withCredentials: t
   let content:any=response;
 console.log('content ',content);
 
-if(content.status==200 && content.role=="admin"){
+if(content.status==200 && content.data.role=="admin"){
 
   console.log('inside if...');
   localStorage.setItem('sessionID',content.sessionID);

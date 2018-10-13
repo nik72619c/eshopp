@@ -101,5 +101,10 @@ console.log('content in logout',content);
     this.router.navigate(['/']);
 
   }
+
+  viewSellers(){
+
+    this.router.navigate(['dashboard/sellers'])
+  }
   
 }

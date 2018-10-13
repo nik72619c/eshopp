@@ -10,6 +10,7 @@ import {AdminModule} from './admin/admin.module';
 import { AppComponent } from './app.component';
 import { ProductViewComponent } from './product/product-view/product-view.component';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+import { ShowSellerComponent } from './admin/show-seller/show-seller.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,10 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
       path: '', component: AdminLoginComponent
 
     },
+    {
+      path: 'dashboard/sellers', component: ShowSellerComponent,
+      canActivate: [AuthGuardService]
+    },
   {
 
     path: 'dashboard', component: AdminDashboardComponent,
@@ -32,9 +37,11 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 
       path: 'products', component: ProductViewComponent,
       canActivateChild: [AuthGuardService]
-    }]
+    }
+  ]
 
   },
+
 
   {
     path: 'profile',
