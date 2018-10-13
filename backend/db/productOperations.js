@@ -4,10 +4,75 @@ const Users=require('./schema/userSchema');
 const Product=require('./schema/productSchema');
 const Admin=require('./schema/adminSchema');
 const Roles=require('./schema/roleSchema');
+const Rights=require('./schema/rightSchema');
+const roleRightMapping=require('./schema/roleRightMapping');
 
 var productOperations={
 
-    addAdmin (adminObject,request,response){
+    deleteSeller(request,response){
+
+        console.log('inside the deleteSeller api...');
+        let sellerid=request.body.sellerid;
+        Users.deleteOne({"username": sellerid}, (err)=>{
+
+            if(err){
+                console.log('error deleting the seller...');
+                response.json({
+                    error: err,
+                    responseText: 'error deleting the seller...',
+                    isSellerDeleted: false
+                });
+            }
+            else{
+
+                UserRoleMapping.deleteOne({"username": sellerid},(err)=>{
+                    
+                    if(err){
+                        console.log('error deleting the seller...');
+                        response.json({
+                            error: err,
+                            responseText: 'error deleting the seller...',
+                            isSellerDeleted: false
+                        });
+                    }
+                    else{
+
+                        console.log('deletion of seller done sucessfully....');
+                        response.json({
+                            isSellerDeleted: true
+                        })
+                    }
+
+                });
+            }
+        })
+    },
+
+    getSellers(request,response){
+
+        console.log('inside the geetSellers function...');
+        Users.find({"role":"seller"},(err,content)=>{
+            if(err){
+
+                console.log('error finding sellers...');
+                response.json({
+                    error: err,
+                    responseText:'error finding sellers...'
+                });
+            }
+
+            else if(content && content.length>0){
+
+                console.log('content obtained in finding sellers is',content);
+                response.json({
+                    content: content,
+                    status: 200
+                });
+            }
+        });
+    },
+
+    addAdmin(adminObject,request,response){
 
         console.log('adminObject obtained at backend is',adminObject);
 
@@ -71,26 +136,76 @@ admin.save(err=>{
                         Roles.find({"roleid": userRoleContent[0].roleid},(err,roleContent)=>{
 
                             console.log('rolecontent', roleContent);
-                            Users.update({"username": content[0].username, "password": content[0].password},{"role": roleContent[0].rolename},(err,numAffected)=>{
+                            Users.update({"username": content[0].username, "password": content[0].password},
+                            {"role": roleContent[0].rolename},(err,numAffected)=>{
                                 if(err){
 
                                     console.log('error updating the document....');
+                                    response.json({
+                                        error: err,
+                                        responseText: 'error updating the document....'
+                                    })
                                 }
 
                                 else{
 
                                     console.log('successfully updated the values and no of values updated are :-',numAffected);
+
+                                    Rights.find({"rightid":content[0].rights[0]},(err,RightContent)=>{
+
+                                        if(err){
+                                            console.log('error in getting role right content...');
+                                            response.json({
+                                                error: err,
+                                                responseText: 'error in getting role right content'
+                                            })
+                                        }
+
+                                        else if(RightContent && RightContent.length>0){
+                                            console.log('rightcontent:-',RightContent);
+            request.session.username=content[0].username;
+            request.session.save(err=>{
+
+                if(err){
+                    console.log('error saving the session...');
+                    response.json({
+                        error: err,
+                        responseText: 'error saving the session'
+                    });
+                }
+
+                else {
+
+                    console.log('session saved successfully..');
+                }
+            });
+
+                console.log('session created');
+                console.log('request.session ', request.session);
+                response.json({
+
+                    data: content[0],
+                    status: 200,
+                    sessionID: request.sessionID,
+                    rights: RightContent,
+                    Roles: roleContent
+                });
+
+                                        }
+                                    })
+
                                 }
                             });
                         });
-
-                        
-
                     }
 
                     else{
 
                         console.log('inside userrolemapping else...');
+                        response.json({
+                            responseText: 'problem in userROleMapping',
+                            status: 500
+                        });
                     }
                 });
             // request.session.username=content[0].username;
@@ -130,72 +245,7 @@ admin.save(err=>{
             }
         });
 
-        //trying a test run on the user authorization and authentication !
-
-//         User.find({username: adminObject.username, password: adminObject.password},(error,content)=>{
-
-//             if(error){
-
-//                 console.log('user name or password invalid..., error in the User.find statement..');
-           
-
-//                             console.log('inside the error part...');
-            
-//                             response.json({
-            
-//                                 status: 404,
-//                                 error: err
-//                             });
-//                     }
-
-                    
-//             else if(content && content.length>0){
-
-// UserRoleMapping.find({username: adminObject.username},(error,content)=>{
-
-//     if(error){
-//         console.log('error in UserRoleMapping.find...');
-
-//         response.json({
-//             status: 404,
-//             err: error
-//         });
-//     }
-
-//     else if(content && content.length>0){
-//         console.log('the role of the user is:-',content);
-        
-//         request.session.username=content[0].username;
-//         request.session.save(err=>{
-
-//             if(err){
-//                 console.log('error saving the session...');
-//             }
-
-//             else {
-
-//                 console.log('session saved successfully..');
-//             }
-//         });
-
-//             console.log('session created');
-//             console.log('request.session ', request.session);
-//             response.json({
-
-//                 username: content[0].username,
-//                 status: 200,
-//                 role: content[0].role,
-//                 sessionID: request.sessionID
-//             });
-//     }
-
-
-// });
-
-
-//             }
-//         });
-
+    
         
     },
 

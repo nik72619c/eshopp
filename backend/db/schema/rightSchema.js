@@ -10,5 +10,5 @@ var rightSchema= new schema({
     
 });
 
-var rightModel=mongoose.model('right_mst',rightSchema);
+var rightModel=mongoose.model('rights',rightSchema);
 module.exports=rightModel;

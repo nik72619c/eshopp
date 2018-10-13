@@ -2,7 +2,7 @@ const express=require('express');
 const app=express();
 // const cors=require('./utils/middlewares/cors');
 const cors=require('cors');
-const sessionstore=require('sessionstore');
+
 const bodyParser= require('body-parser');
 const adminRoute=require('./routes/adminroutes');
 // const productRoute=require('./routes/productroutes');

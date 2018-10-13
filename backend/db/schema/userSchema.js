@@ -15,12 +15,13 @@ var userSchema= new schema({
         'country': String,
         'locality': String,
         'landmark': String,
-        // "type": ""
+       
     },
 
     'isEmailVerified' : {type: Boolean, default: false},
     'gender': String,
     'mobile': [Number],
+    "products": [],
     "cart":[],
     "wishlist": [],
     "order_history": [],
@@ -32,7 +33,7 @@ var userSchema= new schema({
     //setup for  joins
 
     'role':String,
-    // 'rights': [Number]
+    'rights': [Number]
 
 });
 

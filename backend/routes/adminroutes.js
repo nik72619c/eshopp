@@ -118,7 +118,13 @@ console.log('inside the api/checksession');
     });
 });
 
+adminRoute.get('/getSellers',sessionChecker,(request,response)=>{
 
+    console.log('getSellers api called...');
+    productOperations.getSellers(request,response);
+});
 
-
+adminRoute.post('/deleteSeller',sessionChecker, (request,response)=>{
+productOperations.deleteSeller(request,response);
+})
 module.exports=adminRoute;
