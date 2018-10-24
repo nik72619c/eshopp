@@ -1,3 +1,4 @@
+import { profileData } from './../../../globalConfig/profileData';
 import { Component, OnInit } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Router,ActivatedRoute} from '@angular/router';
@@ -12,10 +13,13 @@ export class AdminLoginComponent implements OnInit {
 
   username:String;
   password:String;
+  content: any;
 
   constructor(private http: HttpClient, private router: Router,private route: ActivatedRoute) { 
     this.username="";
     this.password="";
+    this.content;
+    console.log('admin login cons...');
   }
 
   ngOnInit() {
@@ -65,7 +69,7 @@ if(!(adminObject.username=="" || adminObject.password=="")){
 
 this.http.post('http://localhost:1234/fetchUser',adminObject,{withCredentials: true}).toPromise().then((response)=>{
   let content:any=response;
-console.log('content ',content);
+console.log('content ',content.data);
 
 if(content.status==200 && content.data.role=="admin"){
 
@@ -73,6 +77,10 @@ if(content.status==200 && content.data.role=="admin"){
   localStorage.setItem('sessionID',content.sessionID);
   globalVariables.isAuthenticated=true;
   this.router.navigate(['/dashboard']);
+  this.content=content;
+  profileData.data=this.content.data;
+  console.log('profile', profileData);
+
 }
 
 else if(content.status==200 && content.role=="user"){
@@ -80,7 +88,11 @@ else if(content.status==200 && content.role=="user"){
   localStorage.setItem('sessionID',content.sessionID);
   globalVariables.isAuthenticated=true;
   this.router.navigate(['/profile']);
+  this.content=content;
+  profileData.data=this.content.data;
 }
+
+//another elseif to be there for seller and inside it add this.content=content statement and use ProfileService !
 
 }).catch(err=>console.log('error obtained in promise', err));
 

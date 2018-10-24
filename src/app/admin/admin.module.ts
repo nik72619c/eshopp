@@ -1,4 +1,4 @@
-import { ProfileComponent } from './../website/user/profile/profile.component';
+import { ProfileComponent } from './reusable-components/profile/profile.component';
 import { AuthGuardService } from './../guards/authguard.service';
 import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';

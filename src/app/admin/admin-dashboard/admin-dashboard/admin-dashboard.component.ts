@@ -1,8 +1,10 @@
+import { profileData } from './../../../../globalConfig/profileData';
 import { Router, NavigationStart } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { Product } from './../../../models/product';
 import { Component, OnInit } from '@angular/core';
 import {globalVariables} from '../../../../globalConfig/globalVariables.js';
+import * as CanvasJS from '../../../../assets/canvasjs.min.js';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -31,6 +33,8 @@ export class AdminDashboardComponent implements OnInit {
 
       }
     });
+    console.log('profile noe', profileData);
+    console.log('admin login cons...');
     
   }
 
@@ -38,6 +42,30 @@ export class AdminDashboardComponent implements OnInit {
   
   ngOnInit() {
 
+    //code for making the charts....hard coded for now but will make it later for some purpose
+    let chart = new CanvasJS.Chart("chartContainer", {
+      animationEnabled: true,
+      exportEnabled: true,
+      title: {
+        text: "Statistics"
+      },
+      data: [{
+        type: "column",
+        dataPoints: [
+          { y: 71, label: "Apple" },
+          { y: 55, label: "Mango" },
+          { y: 50, label: "Orange" },
+          { y: 65, label: "Banana" },
+          { y: 95, label: "Pineapple" },
+          { y: 68, label: "Pears" },
+          { y: 28, label: "Grapes" },
+          { y: 34, label: "Lychee" },
+          { y: 14, label: "Jackfruit" }
+        ]
+      }]
+    });
+      
+    chart.render();
    
   }
 

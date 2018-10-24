@@ -33,9 +33,6 @@ id:any;
     {
       let sellers:any=data;
 
-      
-      
-
       if(sellers.status==403){
         console.log('logout from frontent');
         globalVariables.isAuthenticated=false;
@@ -79,6 +76,15 @@ id:any;
       }
       else{
 
+        if(response.isSellerDeleted==true){
+
+          alert('seller deleted successfully...');
+          
+        }
+        else{
+
+          alert('some error occured while deleting the requested seller...');
+        }
       }
 
      });
