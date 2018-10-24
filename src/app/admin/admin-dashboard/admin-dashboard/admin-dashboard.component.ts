@@ -1,5 +1,5 @@
 import { profileData } from './../../../../globalConfig/profileData';
-import { Router, NavigationStart } from '@angular/router';
+import { Router, NavigationStart,ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { Product } from './../../../models/product';
 import { Component, OnInit } from '@angular/core';
@@ -21,10 +21,12 @@ export class AdminDashboardComponent implements OnInit {
   productprice: Number;
   productquantity: Number;
   isProductAdded: Boolean;
-
-  constructor(private http: HttpClient,private router:Router) { 
+  email: any;
+sub:any;
+  constructor(private http: HttpClient,private router:Router,private route: ActivatedRoute) { 
 
     this.productid="";
+    this.email="email";
     this.isProductAdded=false;
     this.router.events.subscribe(event=>{
 
@@ -43,6 +45,12 @@ export class AdminDashboardComponent implements OnInit {
   ngOnInit() {
 
     //code for making the charts....hard coded for now but will make it later for some purpose
+
+    this.sub=this.route.params.subscribe(params=>{
+
+      this.email=params['email'];
+      console.log('received email here...', this.email);
+    });
     let chart = new CanvasJS.Chart("chartContainer", {
       animationEnabled: true,
       exportEnabled: true,
@@ -56,7 +64,7 @@ export class AdminDashboardComponent implements OnInit {
           { y: 55, label: "Mango" },
           { y: 50, label: "Orange" },
           { y: 65, label: "Banana" },
-          { y: 95, label: "Pineapple" },
+          { y: 95, label: "Pineapple"},
           { y: 68, label: "Pears" },
           { y: 28, label: "Grapes" },
           { y: 34, label: "Lychee" },
@@ -133,6 +141,10 @@ console.log('content in logout',content);
   viewSellers(){
 
     this.router.navigate(['dashboard/sellers'])
+  }
+
+  ngOnDestroy(){
+    this.sub.unsubscribe();
   }
   
 }

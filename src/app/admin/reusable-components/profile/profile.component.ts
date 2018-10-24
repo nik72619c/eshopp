@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 
 @Component({
@@ -10,17 +10,14 @@ import { Component, OnInit } from '@angular/core';
 })
 
 export class ProfileComponent implements OnInit {
+
 profileData:any;
+@Input() email:String;
   constructor() {
-
-    
-
    }
 
   ngOnInit() {
 
-
-    
    }
 
 }

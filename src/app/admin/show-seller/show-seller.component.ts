@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import {Location} from '@angular/common';
+import { Location } from '@angular/common';
 import { Router, NavigationStart } from '@angular/router';
 import {globalVariables} from '../../../globalConfig/globalVariables.js';
 import { Content } from '@angular/compiler/src/render3/r3_ast';
@@ -15,7 +15,7 @@ export class ShowSellerComponent implements OnInit {
 sellers: any;
 id:any;
 @ViewChild('sellerid') el:ElementRef;
-  constructor(private http: HttpClient,private _location: Location, private router: Router) {
+  constructor(private http: HttpClient,private _location: Location , private router: Router) {
 
     this.sellers=[];
     this.id;
@@ -55,7 +55,7 @@ id:any;
     }
     else{
 
-    this.router.navigate(['/dashboard']);
+      this._location.back(); 
     }
    }
 

@@ -30,7 +30,7 @@ import { ShowSellerComponent } from './admin/show-seller/show-seller.component';
     },
   {
 
-    path: 'dashboard', component: AdminDashboardComponent,
+    path: 'dashboard/:email', component: AdminDashboardComponent,
     canActivate: [AuthGuardService],
     children: [{
 

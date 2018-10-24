@@ -15,6 +15,7 @@ export class AdminLoginComponent implements OnInit {
   password:String;
   content: any;
 
+
   constructor(private http: HttpClient, private router: Router,private route: ActivatedRoute) { 
     this.username="";
     this.password="";
@@ -76,7 +77,7 @@ if(content.status==200 && content.data.role=="admin"){
   console.log('inside if...');
   localStorage.setItem('sessionID',content.sessionID);
   globalVariables.isAuthenticated=true;
-  this.router.navigate(['/dashboard']);
+  this.router.navigate(['/dashboard',content.data.email]);
   this.content=content;
   profileData.data=this.content.data;
   console.log('profile', profileData);
